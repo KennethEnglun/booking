@@ -37,7 +37,61 @@ app.get('/health', (req, res) => {
   res.json({ 
     status: 'OK', 
     timestamp: new Date().toISOString(),
-    version: '1.0.0'
+    version: '1.0.0',
+    environment: process.env.NODE_ENV || 'development'
+  });
+});
+
+// 基本 API 端點（不依賴資料庫）
+app.get('/api/test', (req, res) => {
+  res.json({ 
+    message: 'API 服務正常運行',
+    timestamp: new Date().toISOString()
+  });
+});
+
+// 模擬預約 API（暫時使用記憶體存儲）
+let mockBookings = [];
+
+app.get('/api/bookings', (req, res) => {
+  res.json(mockBookings);
+});
+
+app.post('/api/bookings', (req, res) => {
+  const booking = {
+    id: Date.now().toString(),
+    ...req.body,
+    created_at: new Date().toISOString()
+  };
+  mockBookings.push(booking);
+  res.status(201).json(booking);
+});
+
+app.post('/api/bookings/check-conflict', (req, res) => {
+  const { venue, date, startTime, endTime } = req.body;
+  
+  // 簡單的衝突檢查
+  const hasConflict = mockBookings.some(booking => 
+    booking.venue === venue && 
+    booking.booking_date === date &&
+    ((startTime < booking.end_time && endTime > booking.start_time))
+  );
+  
+  res.json({ 
+    hasConflict,
+    conflictingBookings: hasConflict ? mockBookings.filter(b => 
+      b.venue === venue && b.booking_date === date
+    ) : []
+  });
+});
+
+// 模擬認證 API
+app.get('/api/auth/me', (req, res) => {
+  res.json({
+    id: 'default',
+    username: '訪客',
+    email: 'guest@example.com',
+    created_at: new Date().toISOString()
   });
 });
 
@@ -77,9 +131,10 @@ async function startServer() {
     await initializeDatabase();
     console.log('資料庫初始化完成');
     
-    app.listen(PORT, () => {
+    app.listen(PORT, '0.0.0.0', () => {
       console.log(`服務器運行在端口 ${PORT}`);
       console.log(`健康檢查: http://localhost:${PORT}/health`);
+      console.log(`環境: ${process.env.NODE_ENV || 'development'}`);
     });
   } catch (error) {
     console.error('啟動服務器失敗:', error);
