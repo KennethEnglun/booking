@@ -1,0 +1,42 @@
+{
+  "database": {
+    "schema": {
+      "bookings_v2": {
+        "user_id": {
+          "type": "uuid",
+          "description": "The ID of the user who made the booking."
+        },
+        "person_in_charge": {
+          "type": "text",
+          "description": "Name of the person responsible for the booking."
+        },
+        "venue": {
+          "type": "text",
+          "description": "The name of the booked venue (e.g., '會議室 A')."
+        },
+        "purpose": {
+          "type": "text",
+          "description": "The purpose of the booking."
+        },
+        "booking_date": {
+          "type": "text",
+          "description": "The date of the booking in YYYY-MM-DD format."
+        },
+        "start_time": {
+          "type": "text",
+          "description": "The start time of the booking in HH:MM format."
+        },
+        "end_time": {
+          "type": "text",
+          "description": "The end time of the booking in HH:MM format."
+        },
+        "id": {
+          "type": "uuid",
+          "description": "The unique identifier for the booking. This is the primary key."
+        }
+      }
+    },
+    "instructions": "A simple venue booking system. Create records in the 'bookings_v2' collection. Check for scheduling conflicts before creating a new booking."
+  }
+}
+
