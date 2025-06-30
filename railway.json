@@ -1,0 +1,35 @@
+{
+  "$schema": "https://railway.app/railway.schema.json",
+  "build": {
+    "builder": "NIXPACKS"
+  },
+  "deploy": {
+    "startCommand": "npm start",
+    "restartPolicyType": "ON_FAILURE",
+    "restartPolicyMaxRetries": 10
+  },
+  "domains": [
+    {
+      "host": "booking-production-xxxx.up.railway.app",
+      "port": 5000,
+      "serviceName": "backend"
+    },
+    {
+      "host": "booking-production-yyyy.up.railway.app",
+      "port": 3000,
+      "serviceName": "frontend"
+    }
+  ],
+  "services": {
+    "backend": {
+      "builder": "NIXPACKS",
+      "rootDirectory": "/backend",
+      "startCommand": "npm start"
+    },
+    "frontend": {
+      "builder": "NIXPACKS",
+      "rootDirectory": "/frontend",
+      "startCommand": "npm run build && npm start"
+    }
+  }
+} 

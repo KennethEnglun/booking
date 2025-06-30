@@ -1,19 +1,48 @@
 # 場地預約系統
 
-這是一個智能場地預約系統，支援表單預約和 AI 對話式預約。
+這是一個使用 React 和 Node.js 打造的現代化場地預約系統。
 
 ## 系統架構
 
-- **前端**: React + Vite (部署到 Netlify)
-- **後端**: Node.js + Express + PostgreSQL (部署到 Railway)
+*   **前端**: React + Vite
+*   **後端**: Node.js + Express
+*   **資料庫**: PostgreSQL
+*   **部署平台**: 全部署於 Railway (Monorepo)
 
 ## 功能特色
 
-- 📅 表單式預約：傳統的表單界面，支援多日期預約
-- 🤖 AI 對話預約：自然語言處理，支援中文對話
-- 📊 時間表查看：查看所有預約，支援篩選功能
-- 🔒 時間衝突檢測：自動檢查並防止重複預約
-- 📱 響應式設計：支援桌面和移動設備
+*   📅 **直觀的預約介面**：在同一個畫面上進行預約與查看現有行程。
+*   🗓️ **多日預約**：一次操作即可預約多個不連續的日期。
+*   🔍 **時間表篩選**：依場地或日期快速篩選查詢預約。
+*   🔒 **時間衝突檢測**：後端自動檢查並防止重複預約。
+*   📱 **響應式設計**：完美適配桌面和移動設備。
+
+## Railway 部署 (Monorepo)
+
+本專案被設定為一個 Monorepo，前端、後端和資料庫都部署在同一個 Railway 專案中。
+
+1.  **Fork 並 Clone 專案**：
+    將此 GitHub 儲存庫 Fork 到您自己的帳號下，然後 Clone 到本地。
+
+2.  **在 Railway 上建立專案**：
+    *   登入 Railway，點選 "New Project"。
+    *   選擇 "Deploy from GitHub repo"，然後選擇您剛剛 Fork 的儲存庫。
+    *   Railway 會自動偵測根目錄下的 `railway.json` 檔案，並為您設定 `frontend` 和 `backend` 兩個服務。
+
+3.  **加入 PostgreSQL 資料庫**：
+    *   在您的 Railway 專案儀表板，點選 "New"。
+    *   選擇 "Database"，然後選擇 "PostgreSQL"。
+    *   Railway 會自動建立資料庫，並將 `DATABASE_URL` 這個環境變數注入到您的 `backend` 服務中。
+
+4.  **設定環境變數**：
+    *   **後端 (`backend`)**：
+        *   `JWT_SECRET`: 設定一個您自己的 JWT 密鑰。
+        *   `FRONTEND_URL`: 到 `frontend` 服務的 "Settings" 分頁，複製它的公開網址，然後貼到這裡。
+    *   **前端 (`frontend`)**：
+        *   `VITE_API_URL`: 到 `backend` 服務的 "Settings" 分頁，複製它的公開網址，然後貼到這裡。記得在網址後面加上 `/api`。
+
+5.  **觸發部署**：
+    完成以上設定後，您可以手動觸發一次部署，或將一個新的 commit 推送到 GitHub，Railway 就會自動為您建置並啟動所有服務。
 
 ## 本地開發
 
@@ -24,42 +53,27 @@ cd frontend
 npm install
 npm run dev
 ```
-
-前端將運行在 http://localhost:3000
+前端將運行在 `http://localhost:5173` (或 Vite 指定的其他埠號)。
 
 ### 後端開發
-
 ```bash
 cd backend
 npm install
 cp env.example .env
-# 編輯 .env 文件，設定資料庫連接等
+```
+編輯 `.env` 檔案，設定本地 PostgreSQL 資料庫的 `DATABASE_URL` 和其他變數，然後啟動：
+```bash
 npm run dev
 ```
+後端將運行在 `http://localhost:5000`。
 
-後端將運行在 http://localhost:5000
+## 技術棧
 
-## 部署
+### 前端
+*   React 18, Vite, Tailwind CSS, Day.js, Axios, Serve
 
-### 前端部署 (Netlify)
-
-1. 將 `frontend` 目錄推送到 GitHub
-2. 在 Netlify 中連接 GitHub 倉庫
-3. 設定環境變數：
-   - `VITE_API_URL`: 後端 API URL
-4. 部署設定：
-   - Build command: `npm run build`
-   - Publish directory: `dist`
-
-### 後端部署 (Railway)
-
-1. 將 `backend` 目錄推送到 GitHub
-2. 在 Railway 中連接 GitHub 倉庫
-3. 設定環境變數：
-   - `DATABASE_URL`: PostgreSQL 連接字串
-   - `JWT_SECRET`: JWT 密鑰
-   - `FRONTEND_URL`: 前端 URL
-   - `NODE_ENV`: production
+### 後端
+*   Node.js, Express, PostgreSQL, JWT, bcryptjs
 
 ## 資料庫設定
 
@@ -84,38 +98,6 @@ npm run dev
 - `POST /api/auth/register` - 用戶註冊
 - `POST /api/auth/login` - 用戶登入
 - `POST /api/auth/logout` - 用戶登出
-
-## 技術棧
-
-### 前端
-- React 18
-- Vite
-- Tailwind CSS
-- Day.js
-- Axios
-
-### 後端
-- Node.js
-- Express
-- PostgreSQL
-- JWT
-- bcryptjs
-
-## 環境變數
-
-### 前端 (.env)
-```
-VITE_API_URL=http://localhost:5000/api
-```
-
-### 後端 (.env)
-```
-DATABASE_URL=postgresql://username:password@localhost:5432/venue_booking
-JWT_SECRET=your-secret-key
-PORT=5000
-NODE_ENV=development
-FRONTEND_URL=http://localhost:3000
-```
 
 ## 開發注意事項
 
