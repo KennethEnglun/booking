@@ -2,7 +2,7 @@
   "name": "venue-booking-frontend",
   "version": "1.0.0",
   "description": "場地預約系統前端",
-  "main": "index.js",
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

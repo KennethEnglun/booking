@@ -1,65 +1,38 @@
 import React, { useState } from "react";
-import dayjs from "dayjs";
-import customParseFormat from "dayjs/plugin/customParseFormat";
-import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
-import { BookingFormComponent } from "./components/BookingForm.jsx";
-import { ChatComponent } from "./components/Chat.jsx";
-import { ScheduleComponent } from "./components/Schedule.jsx";
-
-dayjs.extend(customParseFormat);
-dayjs.extend(isSameOrBefore);
 
 function App() {
-  const [view, setView] = useState("booking");
+  const [count, setCount] = useState(0);
 
   return (
-    <div className="w-full max-w-4xl mx-auto p-4 h-[calc(100vh-2rem)] flex flex-col">
-      <header className="mb-4">
-        <h1 className="text-3xl font-bold text-center text-gray-800">
-          智能場地預約系統
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+      <div className="bg-white p-8 rounded-lg shadow-lg text-center">
+        <h1 className="text-3xl font-bold text-gray-800 mb-4">
+          場地預約系統
         </h1>
-        <p className="text-center text-gray-500">
-          透過表單或對話式AI來管理您的預約
+        <p className="text-gray-600 mb-6">
+          系統正在運行中...
         </p>
-      </header>
-
-      <div className="flex justify-center mb-4 bg-gray-200 rounded-full p-1">
-        <button
-          onClick={() => setView("booking")}
-          className={`px-6 py-2 rounded-full text-sm font-semibold transition-colors duration-300 ${
-            view === "booking" ? "bg-white text-blue-600 shadow" : "text-gray-600"
-          }`}
-        >
-          <i className="fa-regular fa-pen-to-square mr-2"></i>
-          表單預約
-        </button>
-        <button
-          onClick={() => setView("chat")}
-          className={`px-6 py-2 rounded-full text-sm font-semibold transition-colors duration-300 ${
-            view === "chat" ? "bg-white text-blue-600 shadow" : "text-gray-600"
-          }`}
-        >
-          <i className="fa-regular fa-comments mr-2"></i>
-          AI 預約
-        </button>
-        <button
-          onClick={() => setView("schedule")}
-          className={`px-6 py-2 rounded-full text-sm font-semibold transition-colors duration-300 ${
-            view === "schedule" ? "bg-white text-blue-600 shadow" : "text-gray-600"
-          }`}
-        >
-          <i className="fa-regular fa-calendar-days mr-2"></i>
-          查看時間表
-        </button>
+        <div className="space-y-4">
+          <button
+            onClick={() => setCount(count + 1)}
+            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+          >
+            點擊測試: {count}
+          </button>
+          <div className="text-sm text-gray-500">
+            如果這個按鈕可以點擊，說明 React 正常運行
+          </div>
+        </div>
+        <div className="mt-6 p-4 bg-gray-50 rounded">
+          <h3 className="font-semibold mb-2">系統狀態：</h3>
+          <ul className="text-sm text-left space-y-1">
+            <li>✅ React 組件載入</li>
+            <li>✅ Tailwind CSS 樣式</li>
+            <li>✅ 狀態管理</li>
+            <li>⏳ 等待 API 連接...</li>
+          </ul>
+        </div>
       </div>
-
-      <main className="flex-1 overflow-hidden">
-        {view === "booking" && (
-          <BookingFormComponent onBookingSuccess={() => setView("schedule")} />
-        )}
-        {view === "chat" && <ChatComponent />}
-        {view === "schedule" && <ScheduleComponent />}
-      </main>
     </div>
   );
 }
