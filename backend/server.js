@@ -126,6 +126,15 @@ app.use((err, req, res, next) => {
 
 // 啟動服務器
 async function startServer() {
+  // 在啟動前檢查必要的環境變數
+  if (!process.env.DATABASE_URL) {
+    const errorMessage = "啟動失敗：缺少必要的 DATABASE_URL 環境變數。\n" +
+      "請檢查您的 .env 檔案（本地開發）或在 Railway 服務設定中（部署環境）確保已設定此變數。\n" +
+      "在 Railway 上，這通常需要將您的後端服務連接到一個 PostgreSQL 資料庫服務。";
+    console.error(errorMessage);
+    process.exit(1); // 終止進程
+  }
+
   try {
     // 初始化資料庫
     await initializeDatabase();
