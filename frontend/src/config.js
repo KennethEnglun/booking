@@ -12,4 +12,4 @@ export const AVAILABLE_VENUES = [
 export const SUCCESS_MSG_VISIBILITY_DURATION = 3000;
 
 /* API 基礎 URL */
-export const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://booking-backend-production.up.railway.app/api'; 
+export const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://booking-production-fcea.up.railway.app/api'; 
